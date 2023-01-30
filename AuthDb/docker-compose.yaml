@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+
+  sqlserver:
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=SuperPss137
+    ports:
+      - 1433:1433
+
+  authapi:
+    image: authapi
+    build:
+      context: ../AuthAPI
+      dockerfile: ../AuthAPI/Dockerfile
+    ports:
+      - 5057:5057
+    links:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    volumes:
+      - ~/.vsdbg:/remote_debugger:rw
