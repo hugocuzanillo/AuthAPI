@@ -37,6 +37,10 @@ if (secret is not null)
 
 var app = builder.Build();
 
+var scope = app.Services.CreateScope();
+var db = scope.ServiceProvider.GetRequiredService<AuthContext>();
+db.Database.EnsureCreated();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
